@@ -1,6 +1,24 @@
 Changelog
 =========
 
+4.4.8
+-----
+#. Python 3 compatibility fixes
+#. Get static files paths in a proper way
+#. Fix Django 1.7 deprecation warning
+#. More examples in readme
+
+
+4.4.7
+-----
+#. Allow only POST requests on upload view.
+#. Exclude hidden files from image browser
+#. Prevent caching of image browser view
+#. Use lazy JSON encoder to support i18n in CKEditor settings.
+#. Misc documentation updates
+#. Check for jQuery presence correctly
+#. Update to CKEditor 4.4.6
+
 4.4.6
 -----
 #. Make upload/browse views be staff_member_required by default (can be overridden)

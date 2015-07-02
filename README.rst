@@ -23,6 +23,8 @@ Installation
 Required
 ~~~~~~~~
 #. Install or add django-ckeditor to your python path.
+    
+    pip install django-ckeditor
 
 #. Add ``ckeditor`` to your ``INSTALLED_APPS`` setting.
 
@@ -36,7 +38,7 @@ Required
    CKEditor has been tested with django FileSystemStorage and S3BotoStorage.
    There are issues using S3Storage from django-storages.
 
-#. Run the ``collectstatic`` management command: ``$ /manage.py collectstatic``. This'll copy static CKEditor require media resources into the directory given by the ``STATIC_ROOT`` setting. See `Django's documentation on managing static files <https://docs.djangoproject.com/en/dev/howto/static-files>`_ for more info.
+#. Run the ``collectstatic`` management command: ``$ ./manage.py collectstatic``. This'll copy static CKEditor require media resources into the directory given by the ``STATIC_ROOT`` setting. See `Django's documentation on managing static files <https://docs.djangoproject.com/en/dev/howto/static-files>`_ for more info.
 
 #. Add CKEditor URL include to your project's ``urls.py`` file::
 
@@ -79,12 +81,25 @@ Optional
 
        CKEDITOR_CONFIGS = {
            'default': {
-               'toolbar': 'Full',
+               'toolbar': 'full',
                'height': 300,
                'width': 300,
            },
        }
 
+   It is possible to create a custom toolbar ::
+
+        CKEDITOR_CONFIGS = {
+            'default': {
+                'toolbar': 'Custom',
+                'toolbar_Custom': [
+                    ['Bold', 'Italic', 'Underline'],
+                    ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+                    ['Link', 'Unlink'],
+                    ['RemoveFormat', 'Source']
+                ]
+            }
+        }
 
 Usage
 -----
@@ -121,13 +136,22 @@ Alernatively you can use the included ``CKEditorWidget`` as the widget for a for
     admin.site.register(Post, PostAdmin)
 
 
-Note that when using outside of admin panel you will have to make sure all form media is present for the editor to work. You may have to render the media like so::
+Outside of django admin
+~~~~~~~~~~~~~~~~~~~~~~~
+
+When you are rendering form outside of admin panel you will have to make sure that all form media is present for the editor to work. One of the way how to achieve this is following::
 
     <form>
         {{ myform.media }}
         {{ myform.as_p }}
         <input type="submit"/>
     </form>
+
+or you can load the media manually at it is done in demo app::
+        
+    {% load staticfiles %}
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
 
 
 
@@ -143,6 +167,9 @@ Using S3
 ~~~~~~~~
 See http://django-storages.readthedocs.org/en/latest/
 
+**NOTE:** ``django-ckeditor`` will not work with S3 through ``django-storages`` without this line in ``settings.py``::  
+
+    AWS_QUERYSTRING_AUTH = False
 
 If you want to use allowedContent
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
